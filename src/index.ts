@@ -9,8 +9,10 @@ import { createServer } from "http";
 import { getEnv } from "./config/getEnv";
 import { connectToMongoDB } from "./config/db";
 import authRoutes from "./routes/auth";
+import aiComplete from "./routes/ai-complete";
 
 import { errorHandlerMiddleware } from "./middlewares/errorHandler";
+import { checkUserAccess } from "./middlewares/checkUserAccess";
 
 const { mongoDbUrl, port } = getEnv();
 const app = express();
@@ -21,10 +23,13 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(helmet());
+// app.use(checkUserAccess());
 
 const server = createServer(app);
 app.use("/api/v1/", authRoutes);
 app.use("/api/v1", authRoutes);
+
+app.use("/api/v1/", aiComplete);
 
 app.use(errorHandlerMiddleware);
 
