@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { IUserSchema } from "./interface/models.interface";
 import { getEnv } from "../config/getEnv";
 
-const { jwtSecret, jwtExpiry } = getEnv();
+const { jwtSecret } = getEnv();
 
 const UserSchema = new Schema<IUserSchema>(
   {
@@ -38,6 +38,12 @@ UserSchema.methods.validatePassword = function (
   candidatePassword: string
 ): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+
+
+UserSchema.methods.getJwtToken = function (): string {
+  return jwt.sign({ id: this._id }, jwtSecret, { expiresIn:36000 });
 };
 
 export const User = mongoose.model<IUserSchema>("User", UserSchema);
