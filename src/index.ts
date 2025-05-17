@@ -9,6 +9,7 @@ import { createServer } from "http";
 import { getEnv } from "./config/getEnv";
 import { connectToMongoDB } from "./config/db";
 import authRoutes from "./routes/auth";
+import timeSheetRoute from "./routes/time_sheet";
 
 import { errorHandlerMiddleware } from "./middlewares/errorHandler";
 
@@ -24,7 +25,7 @@ app.use(helmet());
 
 const server = createServer(app);
 app.use("/api/v1/", authRoutes);
-app.use("/api/v1", authRoutes);
+app.use("/api/v1/",timeSheetRoute );
 
 app.use(errorHandlerMiddleware);
 

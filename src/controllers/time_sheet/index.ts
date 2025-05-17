@@ -1,9 +1,22 @@
-import { saveTimeSheetToExcel } from "../services/timeSheetService";
-// saveTimeSheetToExcel(newSheet);
-export const createTimeSheet = async (req: Request, res: Response) => {
-    const { hours, date, title, JiraId, Description } = req.body;
+import { Request, Response } from "express";
+import { saveTimeSheetToExcel } from "@utils/time_sheet_service";
 
-    if (!hours || !date || !title || !JiraId) {
+let timeSheets: TimeSheet[] = [];
+let idCounter = 1;
+
+interface TimeSheet {
+    id: number;
+    hours: number;
+    date: number;
+    title: string;
+    jiraId: number;
+    description?: string;
+}
+
+export const createTimeSheet = (req: Request, res: Response) => {
+    const { hours, date, title, jiraId, description } = req.body;
+
+    if (!hours || !date || !title || !jiraId) {
         return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -12,14 +25,14 @@ export const createTimeSheet = async (req: Request, res: Response) => {
         hours,
         date,
         title,
-        JiraId,
-        Description,
+        jiraId,
+        description,
     };
 
     timeSheets.push(newSheet);
 
     try {
-        await TimeSheetService.writeToExcel(newSheet);
+        saveTimeSheetToExcel(newSheet); 
     } catch (error) {
         console.error("Failed to write to Excel:", error);
         return res.status(500).json({ message: "Failed to write to Excel" });

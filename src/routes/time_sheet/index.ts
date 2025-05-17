@@ -1,19 +1,11 @@
 // routes/timeSheetRoutes.ts
-import express from "express";
+import express, { RequestHandler } from "express";
 import {
-    getAllTimeSheets,
-    getTimeSheetById,
     createTimeSheet,
-    updateTimeSheet,
-    deleteTimeSheet,
-} from "../controllers/timeSheetController";
+} from "../../controllers/time_sheet";
 
 const router = express.Router();
 
-router.get("/", getAllTimeSheets);
-router.get("/:id", getTimeSheetById);
-router.post("/", createTimeSheet);
-router.put("/:id", updateTimeSheet);
-router.delete("/:id", deleteTimeSheet);
+router.post("/createTimeSheet", createTimeSheet as unknown as RequestHandler);
 
 export default router;

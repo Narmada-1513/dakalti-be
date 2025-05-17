@@ -8,8 +8,8 @@ interface TimeSheet {
     hours: number;
     date: number;
     title: string;
-    JiraId: number;
-    Description?: string;
+    jiraId: number;
+    description?: string;
 }
 
 const EXCEL_FILE_PATH = path.resolve(__dirname, "../data/timeSheets.xlsx");
@@ -33,8 +33,8 @@ export function saveTimeSheetToExcel(timeSheet: TimeSheet): void {
         Hours: timeSheet.hours,
         Date: new Date(timeSheet.date).toISOString(),
         Title: timeSheet.title,
-        JiraID: timeSheet.JiraId,
-        Description: timeSheet.Description || "",
+        JiraID: timeSheet.jiraId,
+        Description: timeSheet.description || "",
     });
 
     // Convert JSON to worksheet
